@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 
 import { GetData } from './ServiceClient';
+// import { SendToDb } from './data-storage/dbClient';
 
 export default class Data extends Component {
+
+    state = {
+        data: {
+            date: '',
+            sensor1: '',
+            sensor2: '',
+            sensor3: '',
+            sensor4: '',
+        }
+    }
 
     componentDidMount() {
 
@@ -15,7 +26,22 @@ export default class Data extends Component {
         }
 
         GetData(USER, response => {
+            let copyOfData = { ...this.state.data };
             console.log('response received', response.data)
+
+            let receivedData = response.data;
+            copyOfData.date = receivedData.date;
+            copyOfData.sensor1 = receivedData.sensor1;
+            copyOfData.sensor2 = receivedData.sensor2;
+            copyOfData.sensor3 = receivedData.sensor3;
+            copyOfData.sensor4 = receivedData.sensor4;
+
+            this.setState({ data: copyOfData })
+            console.log('steitti', this.state.data)
+
+            // SendToDb(copyOfData, response => {
+            //     console.log('back here');
+            // })
         });
     }
 

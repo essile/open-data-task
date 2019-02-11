@@ -13,7 +13,7 @@ var params = {
         { AttributeName: "date", KeyType: "HASH" }
     ],
     AttributeDefinitions: [
-        { AttributeName: "date", AttributeType: "N" },
+        { AttributeName: "date", AttributeType: "S" },
     ],
     ProvisionedThroughput: {
         ReadCapacityUnits: 10,
