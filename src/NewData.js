@@ -16,7 +16,7 @@ export default class Data extends Component {
     }
 
     componentDidMount() {
-        let accessToken = this.props.user.accessToken;
+        let accessToken = this.props.accessToken;
 
         GetData(accessToken, response => {
             let copyOfData = { ...this.state.data };

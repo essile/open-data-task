@@ -9,6 +9,7 @@ class App extends Component {
 
   state = {
     userLoggedIn: false,
+    accessTokenInLocalStorage: localStorage.getItem('accessToken'),
     user: {
       email: '',
       password: '',
@@ -18,7 +19,10 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('alussa', this.state.user);
+    console.log('token alussa', this.state.accessTokenInLocalStorage);
+    if (this.state.accessTokenInLocalStorage !== null) {
+      this.setState({ userLoggedIn: true });
+    }
   }
 
   handleSubmit = event => {
@@ -37,21 +41,26 @@ class App extends Component {
       userWithToken.accessToken = response.data.accessToken;
       userWithToken.id = response.data.id;
 
-      this.setState({ user: userWithToken, userLoggedIn: true });
+      localStorage.setItem('accessToken', response.data.accessToken);
+
+      this.setState({
+        user: userWithToken,
+        accessTokenInLocalStorage: response.data.accessToken,
+        userLoggedIn: true
+      });
     });
   }
 
   renderData = () => {
-    console.log('rendataan dataa');
-    return (<NewData user={this.state.user} />)
+    return (<NewData accessToken={this.state.user.accessToken || this.state.accessTokenInLocalStorage} />)
   }
 
   render() {
     console.log('uuseri renderissa', this.state.user);
+    console.log('token', this.state.accessTokenInLocalStorage);
     return (
       <Container>
-        {this.state.userLoggedIn ? <div>HELLO USER</div> :
-          <UserLogin submit={this.handleSubmit} />}
+        {this.state.accessTokenInLocalStorage === null ? <UserLogin submit={this.handleSubmit} /> : <div>HELLO USER</div>}
         {this.state.userLoggedIn && this.renderData()}
       </Container>
     );
