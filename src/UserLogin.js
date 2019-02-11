@@ -1,36 +1,22 @@
 import React, { Component } from 'react';
-
-import { GetAccessTokenOnLogin } from './ServiceClient';
+import { Form, Button } from 'react-bootstrap';
 
 export default class UserSignup extends Component {
-
-    state = {
-        // SOME HARD CODING FOR TESTING PURPOSES
-        user: {
-            email: 'essi.esimerkki@gmail.com',
-            password: 'salasana',
-            id: 0,
-            accessToken: '',
-        }
-    }
-
-    componentDidMount() {
-        let user = this.state.user;
-        let copyOfUser = { ...this.state.user };
-
-        GetAccessTokenOnLogin(user, response => {
-            copyOfUser.accessToken = response.data.accessToken;
-            copyOfUser.id = response.data.id;
-
-            this.setState({ user: copyOfUser });
-        });
-    }
-
     render() {
         return (
-            <div>
-
-            </div>
+            <Form onSubmit={this.props.submit}>
+                <Form.Group controlId="email">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="email" placeholder="Enter email" />
+                </Form.Group>
+                <Form.Group controlId="password">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+            </Form>
         );
     }
 }
