@@ -16,16 +16,9 @@ export default class Data extends Component {
     }
 
     componentDidMount() {
+        let accessToken = this.props.user.accessToken;
 
-        // HARD CODED FOR TESTING PURPOSES
-        let USER = {
-            accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDQsImVtYWlsIjoiZXNzaS5lc2ltZXJra2lAZ21haWwuY29tIiwiaWF0IjoxNTQ5ODc2MjE5fQ.sM4Wc7bewWXcOTGqk711LkKLz1csDCSxSsoho50MGFo",
-            email: "essi.esimerkki@gmail.com",
-            password: 'salasana',
-            id: 44
-        }
-
-        GetData(USER, response => {
+        GetData(accessToken, response => {
             let copyOfData = { ...this.state.data };
             console.log('response received', response.data)
 
@@ -37,7 +30,6 @@ export default class Data extends Component {
             copyOfData.sensor4 = receivedData.sensor4;
 
             this.setState({ data: copyOfData })
-            console.log('steitti', this.state.data)
 
             // SendToDb(copyOfData, response => {
             //     console.log('back here');
@@ -48,7 +40,11 @@ export default class Data extends Component {
     render() {
         return (
             <div>
-
+                <div>date: {this.state.data.date}</div>
+                <div>sensor1: {this.state.data.sensor1}</div>
+                <div>sensor2: {this.state.data.sensor2}</div>
+                <div>sensor3: {this.state.data.sensor3}</div>
+                <div>sensor4: {this.state.data.sensor4}</div>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import UserLogin from './UserLogin';
-import Data from './Data';
+import NewData from './NewData';
 import Container from 'react-bootstrap/Container';
 
 import { GetAccessTokenOnLogin } from './ServiceClient';
@@ -41,13 +41,18 @@ class App extends Component {
     });
   }
 
+  renderData = () => {
+    console.log('rendataan dataa');
+    return (<NewData user={this.state.user} />)
+  }
+
   render() {
     console.log('uuseri renderissa', this.state.user);
     return (
       <Container>
         {this.state.userLoggedIn ? <div>HELLO USER</div> :
           <UserLogin submit={this.handleSubmit} />}
-        <Data />
+        {this.state.userLoggedIn && this.renderData()}
       </Container>
     );
   }

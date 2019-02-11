@@ -28,10 +28,10 @@ export function GetAccessTokenOnLogin(user, callback) {
         });
 }
 
-export function GetData(user, callback) {
+export function GetData(accessToken, callback) {
 
     let config = {
-        headers: { 'Authorization': 'Bearer ' + user.accessToken }
+        headers: { 'Authorization': 'Bearer ' + accessToken }
     }
 
     Axios.get(API + '/api/events', config)
