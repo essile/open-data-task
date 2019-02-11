@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { GetData } from './ServiceClient';
+import { GetNewData } from './ServiceClient';
 // import { SendToDb } from './data-storage/dbClient';
 
 export default class Data extends Component {
@@ -18,7 +18,7 @@ export default class Data extends Component {
     componentDidMount() {
         let accessToken = this.props.accessToken;
 
-        GetData(accessToken, response => {
+        GetNewData(accessToken, response => {
             let copyOfData = { ...this.state.data };
             console.log('response received', response.data)
 
@@ -40,7 +40,7 @@ export default class Data extends Component {
     render() {
         return (
             <div>
-                <div>date: {this.state.data.date}</div>
+                <div>date: {new Date(this.state.data.date).toLocaleString()}</div>
                 <div>sensor1: {this.state.data.sensor1}</div>
                 <div>sensor2: {this.state.data.sensor2}</div>
                 <div>sensor3: {this.state.data.sensor3}</div>

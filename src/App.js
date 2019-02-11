@@ -4,6 +4,7 @@ import NewData from './NewData';
 import Container from 'react-bootstrap/Container';
 
 import { GetAccessTokenOnLogin } from './ServiceClient';
+import OldData from './OldData';
 
 class App extends Component {
 
@@ -60,8 +61,17 @@ class App extends Component {
     console.log('token', this.state.accessTokenInLocalStorage);
     return (
       <Container>
-        {this.state.accessTokenInLocalStorage === null ? <UserLogin submit={this.handleSubmit} /> : <div>HELLO USER</div>}
-        {this.state.userLoggedIn && this.renderData()}
+        <div>
+          {this.state.accessTokenInLocalStorage === null ? <UserLogin submit={this.handleSubmit} /> : <div>HELLO USER</div>}
+        </div>
+        <div>
+          <h4>Newest data:</h4>
+          {this.state.userLoggedIn && this.renderData()}
+        </div>
+        <div>
+        <h4>Old data:</h4>
+          {this.state.userLoggedIn && < OldData />}
+        </div>
       </Container>
     );
   }

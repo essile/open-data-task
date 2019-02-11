@@ -1,6 +1,7 @@
 const express = require('express');
-var AWS = require('aws-sdk');
+const AWS = require('aws-sdk');
 const bodyparser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 2550;
@@ -11,8 +12,15 @@ AWS.config.update({
 });
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-app.use(bodyparser.json());
 app.listen(port, () => console.log(`Listening on port ${port}`));
+app.use(bodyparser.json());
+app.use(cors({
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'origin': '*',
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false
+}));
 
 app.get('/api/hello', (req, res) => {
     res.json({ test: 'Hello' });
