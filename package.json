@@ -5,6 +5,7 @@
   "dependencies": {
     "aws-sdk": "^2.400.0",
     "axios": "^0.18.0",
+    "bizcharts": "^3.4.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.2.1",
     "cors": "^2.8.5",
