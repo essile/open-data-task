@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import { GetAccessTokenOnLogin } from './ServiceClient';
 import OldData from './OldData';
 
-class App extends Component {
+export default class App extends Component {
 
   state = {
     userLoggedIn: false,
@@ -29,15 +29,19 @@ class App extends Component {
     event.preventDefault();
 
     let userWithEmailAndPw = { ...this.state.user };
-    userWithEmailAndPw.email = event.target.email.value;
-    userWithEmailAndPw.password = event.target.password.value;
+    let formData = event.target;
+
+    userWithEmailAndPw.email = formData.email.value;
+    userWithEmailAndPw.password = formData.password.value;
+
     this.setState({ user: userWithEmailAndPw });
     this.GetAccessToken(userWithEmailAndPw);
   }
 
-  GetAccessToken = (user) => {
+  GetAccessToken = user => {
     GetAccessTokenOnLogin(user, response => {
       let userWithToken = { ...this.state.user };
+
       userWithToken.accessToken = response.data.accessToken;
       userWithToken.id = response.data.id;
 
@@ -51,8 +55,14 @@ class App extends Component {
     });
   }
 
-  renderData = () => {
-    return (<NewData accessToken={this.state.user.accessToken || this.state.accessTokenInLocalStorage} />)
+  renderLoginPage = () => {
+    return (<UserLogin submit={this.handleSubmit} />);
+  }
+  renderNewestData = () => {
+    return (<NewData accessToken={this.state.user.accessToken || this.state.accessTokenInLocalStorage} />);
+  }
+  renderOldData = () => {
+    return (< OldData />);
   }
 
   render() {
@@ -62,19 +72,19 @@ class App extends Component {
     return (
       <Container>
         <div>
-          {this.state.accessTokenInLocalStorage === null ? <UserLogin submit={this.handleSubmit} /> : <div>HELLO USER</div>}
+          {this.state.accessTokenInLocalStorage === null ? this.renderLoginPage() : <div>HELLO USER</div>}
         </div>
-        <div>
-          <h4>Newest data:</h4>
-          {this.state.userLoggedIn && this.renderData()}
-        </div>
-        <div>
-        <h4>Old data:</h4>
-          {this.state.userLoggedIn && < OldData />}
-        </div>
+        {this.state.userLoggedIn &&
+          <div>
+            <h4>Newest data:</h4>
+            {this.renderNewestData()}
+          </div>}
+        {this.state.userLoggedIn &&
+          <div>
+            <h4>Old data:</h4>
+            {this.renderOldData()}
+          </div>}
       </Container>
     );
   }
 }
-
-export default App;

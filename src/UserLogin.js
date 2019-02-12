@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-export default class UserSignup extends Component {
+export default class UserLogin extends Component {
     render() {
         return (
             <Form onSubmit={this.props.submit}>

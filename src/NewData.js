@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
 import { GetNewData, SendNewSensorDataToDb } from './ServiceClient';
-// import { SendToDb } from './data-storage/dbClient';
 
 export default class Data extends Component {
 
@@ -16,41 +14,28 @@ export default class Data extends Component {
     }
 
     componentDidMount() {
-        let accessToken = this.props.accessToken;
-
         if (this.state.data.date === '') {
-            GetNewData(accessToken, response => {
-                console.log('state object empty, getting data.')
-
-                let receivedData = { ...response.data };
-                this.setState({ data: receivedData })
-
-                SendNewSensorDataToDb(receivedData, response => {
-                    console.log('newest data sent to the db, response:', response);
-                });
-            });
+            this.fetchNewestData();
         }
 
         this.interval = setInterval(() => {
-            console.log('data visible but getting newest version.')
-            GetNewData(accessToken, response => {
-                let copyOfData = { ...this.state.data };
-
-                let receivedData = response.data;
-                copyOfData.date = receivedData.date;
-                copyOfData.sensor1 = receivedData.sensor1;
-                copyOfData.sensor2 = receivedData.sensor2;
-                copyOfData.sensor3 = receivedData.sensor3;
-                copyOfData.sensor4 = receivedData.sensor4;
-
-                this.setState({ data: copyOfData })
-
-                SendNewSensorDataToDb(copyOfData, response => {
-                    console.log('newest data sent to the db, response:', response);
-                });
-            });
+            this.fetchNewestData();
         }, 1000 * 60 * 15);
         // }, 1000 * 15); //TEST
+    }
+
+    fetchNewestData = () => {
+        GetNewData(this.props.accessToken, response => {
+            let receivedData = { ...response.data };
+            this.setState({ data: receivedData });
+            this.sendDataToDb(receivedData);
+        });
+    }
+
+    sendDataToDb = () => {
+        SendNewSensorDataToDb(this.state.data, response => {
+            console.log('newest data sent to the db, response:', response);
+        });
     }
 
     render() {
