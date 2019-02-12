@@ -52,3 +52,19 @@ export function GetDataFromDb(callback) {
             callback(error.response);
         });
 }
+
+export function SendNewSensorDataToDb(data, callback) {
+    Axios.post(BACKEND + '/api/new-data-to-db', {
+        "date": data.date,
+        "sensor1": data.sensor1,
+        "sensor2": data.sensor2,
+        "sensor3": data.sensor3,
+        "sensor4": data.sensor4
+    })
+        .then(response => {
+            callback(response);
+        })
+        .catch(error => {
+            callback(error.response);
+        });
+}

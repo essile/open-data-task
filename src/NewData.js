@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { GetNewData } from './ServiceClient';
+import { GetNewData, SendNewSensorDataToDb } from './ServiceClient';
 // import { SendToDb } from './data-storage/dbClient';
 
 export default class Data extends Component {
@@ -18,26 +18,44 @@ export default class Data extends Component {
     componentDidMount() {
         let accessToken = this.props.accessToken;
 
-        GetNewData(accessToken, response => {
-            let copyOfData = { ...this.state.data };
-            console.log('response received', response.data)
+        if (this.state.data.date === '') {
+            GetNewData(accessToken, response => {
+                console.log('state object empty, getting data.')
 
-            let receivedData = response.data;
-            copyOfData.date = receivedData.date;
-            copyOfData.sensor1 = receivedData.sensor1;
-            copyOfData.sensor2 = receivedData.sensor2;
-            copyOfData.sensor3 = receivedData.sensor3;
-            copyOfData.sensor4 = receivedData.sensor4;
+                let receivedData = { ...response.data };
+                this.setState({ data: receivedData })
 
-            this.setState({ data: copyOfData })
+                SendNewSensorDataToDb(receivedData, response => {
+                    console.log('newest data sent to the db, response:', response);
+                });
+            });
+        }
 
-            // SendToDb(copyOfData, response => {
-            //     console.log('back here');
-            // })
-        });
+        this.interval = setInterval(() => {
+            console.log('data visible but getting newest version.')
+            GetNewData(accessToken, response => {
+                let copyOfData = { ...this.state.data };
+
+                let receivedData = response.data;
+                copyOfData.date = receivedData.date;
+                copyOfData.sensor1 = receivedData.sensor1;
+                copyOfData.sensor2 = receivedData.sensor2;
+                copyOfData.sensor3 = receivedData.sensor3;
+                copyOfData.sensor4 = receivedData.sensor4;
+
+                this.setState({ data: copyOfData })
+
+                SendNewSensorDataToDb(copyOfData, response => {
+                    console.log('newest data sent to the db, response:', response);
+                });
+            });
+        }, 1000 * 60 * 15);
+        // }, 1000 * 15); //TEST
     }
 
     render() {
+        console.log('new data to render', this.state.data);
+
         return (
             <div>
                 <div>date: {new Date(this.state.data.date).toLocaleString()}</div>

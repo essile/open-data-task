@@ -11,13 +11,10 @@ class OldData extends Component {
     }
 
     componentDidMount() {
-        console.log('didm', this.state.oldData)
-
         GetDataFromDb(response => {
             let FetchedOldData = response.data;
 
             this.sortDataByDate(FetchedOldData);
-            console.log('saatiin vanha data:', FetchedOldData);
 
             this.setState({ oldData: FetchedOldData });
         });
@@ -30,7 +27,8 @@ class OldData extends Component {
     }
 
     render() {
-        console.log('state renderiss:', this.state.oldData)
+        console.log('old data to render', this.state.oldData);
+
         return (
             <div>
                 {this.state.oldData.map((dataItem, index) => {

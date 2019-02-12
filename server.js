@@ -29,7 +29,7 @@ app.get('/api/hello', (req, res) => {
 app.get('/api/data-from-db', (req, res) => {
     let dataItems = [];
     let params = {
-        TableName: "SensorData"
+        TableName: "AllSensorData"
     };
     console.log("Scanning SensorData table.");
     docClient.scan(params, onScan);
@@ -47,12 +47,12 @@ app.get('/api/data-from-db', (req, res) => {
     }
 });
 
-app.post('/api/send-to-db', (req, res) => {
+app.post('/api/new-data-to-db', (req, res) => {
     dataToBeSaved = req.body;
     console.log(req.body);
 
     let params = {
-        TableName: "SensorData",
+        TableName: "AllSensorData",
         Item: {
             "date": dataToBeSaved.date,
             "sensor1": dataToBeSaved.sensor1,
@@ -62,12 +62,36 @@ app.post('/api/send-to-db', (req, res) => {
         }
     };
 
-    console.log("Adding a new item...", params);
+    console.log("Adding the item to AllSensorData table...");
     docClient.put(params, function (err, data) {
         if (err) {
             console.error("Error JSON:", JSON.stringify(err, null, 2));
+            res.json({ type: 'error', message: error.message });
         } else {
             console.log("Success, added item:", JSON.stringify(data, null, 2));
+            let savedItem = params.Item;
+            res.json({ type: 'success', savedItem });
         }
     });
+});
+
+app.get('/api/data-from-db', (req, res) => {
+    let dataItems = [];
+    let params = {
+        TableName: "AllSensorData"
+    };
+    console.log("Scanning ALL-SensorData table.");
+    docClient.scan(params, onScan);
+
+    function onScan(err, data) {
+        if (err) {
+            console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Scan succeeded.");
+            data.Items.forEach(function (dataItem) {
+                dataItems.push(dataItem);
+            });
+        }
+        res.json(dataItems);
+    }
 });

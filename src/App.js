@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('token alussa', this.state.accessTokenInLocalStorage);
     if (this.state.accessTokenInLocalStorage !== null) {
       this.setState({ userLoggedIn: true });
     }
@@ -57,8 +56,9 @@ class App extends Component {
   }
 
   render() {
-    console.log('uuseri renderissa', this.state.user);
-    console.log('token', this.state.accessTokenInLocalStorage);
+    console.log('user', this.state.user);
+    console.log('accessTokenInLocalStorage', this.state.accessTokenInLocalStorage);
+
     return (
       <Container>
         <div>
