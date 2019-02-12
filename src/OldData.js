@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { GetDataFromDb } from './ServiceClient';
 
-class OldData extends Component {
-    constructor(props) {
-        super(props)
+export default class OldData extends Component {
 
-        this.state = {
-            oldData: [],
-        }
+    state = {
+        oldData: [],
     }
 
     componentDidMount() {
@@ -20,7 +17,7 @@ class OldData extends Component {
         });
     }
 
-    sortDataByDate = (data) => {
+    sortDataByDate = data => {
         data.sort(function (dateTime1, dateTime2) {
             return new Date(dateTime1.date) - new Date(dateTime2.date)
         });
@@ -38,5 +35,3 @@ class OldData extends Component {
         );
     }
 }
-
-export default OldData;
