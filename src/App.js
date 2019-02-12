@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import UserLogin from './UserLogin';
-import Data from './Data';
+import NewData from './NewData';
 import Container from 'react-bootstrap/Container';
 
 import { GetAccessTokenOnLogin } from './ServiceClient';
+import OldData from './OldData';
 
 class App extends Component {
 
   state = {
     userLoggedIn: false,
+    accessTokenInLocalStorage: localStorage.getItem('accessToken'),
     user: {
       email: '',
       password: '',
@@ -18,7 +20,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('alussa', this.state.user);
+    if (this.state.accessTokenInLocalStorage !== null) {
+      this.setState({ userLoggedIn: true });
+    }
   }
 
   handleSubmit = event => {
@@ -37,17 +41,37 @@ class App extends Component {
       userWithToken.accessToken = response.data.accessToken;
       userWithToken.id = response.data.id;
 
-      this.setState({ user: userWithToken, userLoggedIn: true });
+      localStorage.setItem('accessToken', response.data.accessToken);
+
+      this.setState({
+        user: userWithToken,
+        accessTokenInLocalStorage: response.data.accessToken,
+        userLoggedIn: true
+      });
     });
   }
 
+  renderData = () => {
+    return (<NewData accessToken={this.state.user.accessToken || this.state.accessTokenInLocalStorage} />)
+  }
+
   render() {
-    console.log('uuseri renderissa', this.state.user);
+    console.log('user', this.state.user);
+    console.log('accessTokenInLocalStorage', this.state.accessTokenInLocalStorage);
+
     return (
       <Container>
-        {this.state.userLoggedIn ? <div>HELLO USER</div> :
-          <UserLogin submit={this.handleSubmit} />}
-        <Data />
+        <div>
+          {this.state.accessTokenInLocalStorage === null ? <UserLogin submit={this.handleSubmit} /> : <div>HELLO USER</div>}
+        </div>
+        <div>
+          <h4>Newest data:</h4>
+          {this.state.userLoggedIn && this.renderData()}
+        </div>
+        <div>
+        <h4>Old data:</h4>
+          {this.state.userLoggedIn && < OldData />}
+        </div>
       </Container>
     );
   }
