@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import UserLogin from './UserLogin';
 import NewData from './NewData';
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 
 import { GetAccessTokenOnLogin } from './ServiceClient';
 import OldData from './OldData';
+import history from './history';
 
 export default class App extends Component {
 
@@ -20,7 +22,14 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    if (this.state.accessTokenInLocalStorage !== null) {
+    let validAccessTokenExists =
+      (this.state.accessTokenInLocalStorage !== null
+        && this.state.accessTokenInLocalStorage !== undefined);
+
+    if (!validAccessTokenExists) {
+      localStorage.removeItem('accessToken');
+    }
+    if (validAccessTokenExists) {
       this.setState({ userLoggedIn: true });
     }
   }
@@ -45,14 +54,23 @@ export default class App extends Component {
       userWithToken.accessToken = response.data.accessToken;
       userWithToken.id = response.data.id;
 
-      localStorage.setItem('accessToken', response.data.accessToken);
+      if (userWithToken.accessToken !== undefined) {
+        localStorage.setItem('accessToken', response.data.accessToken);
 
-      this.setState({
-        user: userWithToken,
-        accessTokenInLocalStorage: response.data.accessToken,
-        userLoggedIn: true
-      });
+        this.setState({
+          user: userWithToken,
+          accessTokenInLocalStorage: response.data.accessToken,
+          userLoggedIn: true
+        });
+      } else {
+        alert('login failed.');
+      }
     });
+  }
+
+  logout = () => {
+    localStorage.removeItem('accessToken');
+    this.setState({ userLoggedIn: false });
   }
 
   renderLoginPage = () => {
@@ -65,25 +83,40 @@ export default class App extends Component {
     return (< OldData />);
   }
 
+  showSensorData = (sensorNumber) => {
+    console.log('clicked sensor number', sensorNumber);
+    history.push(`/sensor/${sensorNumber}`);
+  }
+
   render() {
     console.log('user', this.state.user);
     console.log('accessTokenInLocalStorage', this.state.accessTokenInLocalStorage);
+    console.log('userloggedin', this.state.userLoggedIn);
 
     return (
       <Container>
         <div>
-          {this.state.accessTokenInLocalStorage === null ? this.renderLoginPage() : <div>HELLO USER</div>}
+          {this.state.userLoggedIn ? <div>HELLO USER <Button onClick={this.logout}>Log out</Button></div> : this.renderLoginPage()}
         </div>
         {this.state.userLoggedIn &&
           <div>
-            <h4>Newest data:</h4>
-            {this.renderNewestData()}
-          </div>}
-        {this.state.userLoggedIn &&
-          <div>
-            <h4>Old data:</h4>
-            {this.renderOldData()}
-          </div>}
+            <div>
+              <h4>Newest data:</h4>
+              {this.renderNewestData()}
+            </div>
+            <div>
+              <h4>Old data:</h4>
+              {this.renderOldData()}
+            </div>
+            <div>
+              <h4>Sensors:</h4>
+              <Button onClick={() => this.showSensorData(1)}>Sensor1</Button>
+              <Button onClick={() => this.showSensorData(2)}>Sensor2</Button>
+              <Button onClick={() => this.showSensorData(3)}>Sensor3</Button>
+              <Button onClick={() => this.showSensorData(4)}>Sensor4</Button>
+            </div>
+          </div>
+        }
       </Container>
     );
   }

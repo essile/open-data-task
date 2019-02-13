@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { GetDataFromDb } from './ServiceClient';
+import Button from 'react-bootstrap/Button';
+import history from './history';
+import AllDataInChart from './allDataInChart';
 
 export default class OldData extends Component {
 
@@ -10,9 +13,7 @@ export default class OldData extends Component {
     componentDidMount() {
         GetDataFromDb(response => {
             let FetchedOldData = response.data;
-
             this.sortDataByDate(FetchedOldData);
-
             this.setState({ oldData: FetchedOldData });
         });
     }
@@ -23,13 +24,21 @@ export default class OldData extends Component {
         });
     }
 
+    showDetails = (dataItem) => {
+        history.push({
+            pathname: `/view/${dataItem.date}`,
+            state: { dataItem }
+        })
+    }
+
     render() {
         console.log('old data to render', this.state.oldData);
 
         return (
             <div>
+                {this.state.oldData.length !== 0 && <AllDataInChart data={this.state.oldData} />}
                 {this.state.oldData.map((dataItem, index) => {
-                    return (<div key={index}>{new Date(dataItem.date).toLocaleString()}</div>)
+                    return (<Button key={index} onClick={() => this.showDetails(dataItem)}>{new Date(dataItem.date).toLocaleString()}</Button>)
                 })}
             </div>
         );
