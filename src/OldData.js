@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import { GetDataFromDb } from './ServiceClient';
-import Button from 'react-bootstrap/Button';
-import history from './history';
 import AllDataInChart from './allDataInChart';
+import OldDataTable from './OldDataTable';
+import Button from 'react-bootstrap/Button';
 
 export default class OldData extends Component {
 
     state = {
-        oldData: [],
+        oldData: [
+            {
+                date: '',
+                sensor1: '',
+                sensor2: '',
+                sensor3: '',
+                sensor4: '',
+            }
+        ],
+        showTable: false
     }
 
     componentDidMount() {
@@ -24,22 +33,24 @@ export default class OldData extends Component {
         });
     }
 
-    showDetails = (dataItem) => {
-        history.push({
-            pathname: `/view/${dataItem.date}`,
-            state: { dataItem }
-        })
+    showData = () => {
+        this.setState({ showTable: !this.state.showTable });
     }
 
     render() {
         console.log('old data to render', this.state.oldData);
+        const toggleTableButton = <Button onClick={this.showData} variant="secondary">{this.state.showTable ? 'Hide table' : 'Show the data in table'}</Button>
 
         return (
             <div>
-                {this.state.oldData.length !== 0 && <AllDataInChart data={this.state.oldData} />}
-                {this.state.oldData.map((dataItem, index) => {
-                    return (<Button key={index} onClick={() => this.showDetails(dataItem)}>{new Date(dataItem.date).toLocaleString()}</Button>)
-                })}
+                {this.state.oldData.length > 1 && <AllDataInChart data={this.state.oldData} />}
+                {toggleTableButton}
+                {this.state.showTable &&
+                    <div>
+                        <OldDataTable data={this.state.oldData} />
+                        <span>{toggleTableButton}</span>
+                    </div>
+                }
             </div>
         );
     }

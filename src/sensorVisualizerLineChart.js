@@ -1,6 +1,8 @@
 import React from "react";
 import { Chart, Geom, Axis, Tooltip, } from "bizcharts";
 import { GetDataFromDb } from './ServiceClient';
+import { Button } from "react-bootstrap";
+import history from './history';
 
 export default class Basic extends React.Component {
 
@@ -55,8 +57,9 @@ export default class Basic extends React.Component {
 
         return (
             <div>
-                <Chart height={400} data={data} scale={cols} forceFit>
-                    <Axis name="dateTime" />
+                <br />
+                <Chart height={400} data={data} scale={cols} padding="auto" forceFit>
+                    <Axis name="dateTime" visible={false} />
                     <Axis name="sensorValue" />
                     <Tooltip crosshairs={{ type: "y" }} />
                     <Geom type="line" position="dateTime*sensorValue" size={2} />
@@ -71,6 +74,9 @@ export default class Basic extends React.Component {
                         }}
                     />
                 </Chart>
+                <div>
+                    <Button variant="secondary" onClick={() => history.goBack()}>Back</Button>
+                </div>
             </div>
         );
     }

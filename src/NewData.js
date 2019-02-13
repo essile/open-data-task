@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Card, ListGroup, ListGroupItem, Table, } from 'react-bootstrap';
 import { GetNewData, SendNewSensorDataToDb } from './ServiceClient';
 
 export default class Data extends Component {
@@ -21,7 +22,6 @@ export default class Data extends Component {
         this.interval = setInterval(() => {
             this.fetchNewestData();
         }, 1000 * 60 * 15);
-        // }, 1000 * 15); //TEST
     }
 
     fetchNewestData = () => {
@@ -42,13 +42,33 @@ export default class Data extends Component {
         console.log('new data to render', this.state.data);
 
         return (
-            <div>
-                <div>date: {new Date(this.state.data.date).toLocaleString()}</div>
-                <div>sensor1: {this.state.data.sensor1}</div>
-                <div>sensor2: {this.state.data.sensor2}</div>
-                <div>sensor3: {this.state.data.sensor3}</div>
-                <div>sensor4: {this.state.data.sensor4}</div>
-            </div>
+            <Card bg="light">
+                {/* <Card.Body> */}
+                <Card.Header>
+                    <h3>Current sensor data</h3>
+                    Collected {new Date(this.state.data.date).toLocaleString()}
+                </Card.Header>
+                <Table>
+                    <tbody>
+                        <tr>
+                            <td>sensor1</td>
+                            <td>{this.state.data.sensor1}</td>
+                        </tr>
+                        <tr>
+                            <td>sensor2</td>
+                            <td>{this.state.data.sensor2}</td>
+                        </tr>
+                        <tr>
+                            <td>sensor3</td>
+                            <td>{this.state.data.sensor3}</td>
+                        </tr>
+                        <tr>
+                            <td>sensor4</td>
+                            <td>{this.state.data.sensor4}</td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </Card>
         );
     }
 }

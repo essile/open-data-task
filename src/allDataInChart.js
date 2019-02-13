@@ -6,7 +6,7 @@ import { GetDataFromDb } from './ServiceClient';
 export default class Curved extends React.Component {
 
     state = {
-        filteredData: [
+        dataFromSensors: [
             {
                 date: '',
                 sensor1: '',
@@ -24,12 +24,12 @@ export default class Curved extends React.Component {
                 this.sortDataByDate(response.data);
                 console.log(response.data);
                 dataWithLocaleDateTime = this.changeDateTimeToLocale(response.data);
-                this.setState({ filteredData: dataWithLocaleDateTime });
+                this.setState({ dataFromSensors: dataWithLocaleDateTime });
             });
         } else {
             this.sortDataByDate(this.props.data);
             dataWithLocaleDateTime = this.changeDateTimeToLocale(this.props.data);
-            this.setState({ filteredData: dataWithLocaleDateTime });
+            this.setState({ dataFromSensors: dataWithLocaleDateTime });
         }
     }
 
@@ -52,9 +52,9 @@ export default class Curved extends React.Component {
     }
 
     render() {
-        console.log('data to be rendered', this.state.filteredData);
+        console.log('data to be rendered', this.state.dataFromSensors);
 
-        const data = this.state.filteredData;
+        const data = this.state.dataFromSensors;
         const ds = new DataSet();
         const dv = ds.createView().source(data);
 
@@ -69,19 +69,17 @@ export default class Curved extends React.Component {
 
         return (
             <div>
-                <Chart height={400} data={dv} scale={cols} forceFit>
+                <p>By clicking the sensor tags on the bottom of the chart you can hide and show the lines.</p>
+                <Chart height={400} data={dv} scale={cols} padding="auto" forceFit>
                     <Legend />
-                    <Axis name="date" />
-                    <Axis
-                        name="value"
-                        label={{ formatter: val => `${val}` }}
-                    />
+                    <Axis name="date"
+                        visible={false} />
                     <Tooltip crosshairs={{ type: "y" }} />
                     <Geom
                         type="line"
                         position="date*value"
                         size={2}
-                        color={"sensorValue"}
+                        color={['sensorValue', ["#2E2E2E", "#4000FF", "#298A08", "#610B5E"]]}
                         shape={"smooth"}
                     />
                     <Geom
@@ -89,7 +87,7 @@ export default class Curved extends React.Component {
                         position="date*value"
                         size={4}
                         shape={"circle"}
-                        color={"sensorValue"}
+                        color={['sensorValue', ["#2E2E2E", "#4000FF", "#298A08", "#610B5E"]]}
                         style={{
                             stroke: "#fff",
                             lineWidth: 1
