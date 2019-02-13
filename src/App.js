@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import { GetAccessTokenOnLogin } from './ServiceClient';
 import OldData from './OldData';
+import history from './history';
 
 export default class App extends Component {
 
@@ -82,6 +83,11 @@ export default class App extends Component {
     return (< OldData />);
   }
 
+  showSensorData = (sensorNumber) => {
+    console.log('clicked sensor number', sensorNumber);
+    history.push(`/sensor/${sensorNumber}`);
+  }
+
   render() {
     console.log('user', this.state.user);
     console.log('accessTokenInLocalStorage', this.state.accessTokenInLocalStorage);
@@ -101,6 +107,13 @@ export default class App extends Component {
             <div>
               <h4>Old data:</h4>
               {this.renderOldData()}
+            </div>
+            <div>
+              <h4>Sensors:</h4>
+              <Button onClick={() => this.showSensorData(1)}>Sensor1</Button>
+              <Button onClick={() => this.showSensorData(2)}>Sensor2</Button>
+              <Button onClick={() => this.showSensorData(3)}>Sensor3</Button>
+              <Button onClick={() => this.showSensorData(4)}>Sensor4</Button>
             </div>
           </div>
         }
