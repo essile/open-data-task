@@ -7,6 +7,8 @@ import Button from 'react-bootstrap/Button';
 import { GetAccessTokenOnLogin } from './ServiceClient';
 import OldData from './OldData';
 import history from './history';
+import NavigationBar from './NavigationBar';
+import { Jumbotron, Row, Col } from 'react-bootstrap';
 
 export default class App extends Component {
 
@@ -74,7 +76,16 @@ export default class App extends Component {
   }
 
   renderLoginPage = () => {
-    return (<UserLogin submit={this.handleSubmit} />);
+    return (
+      <Container>
+        <br />
+        <Jumbotron>
+          <h2>Hello user!</h2>
+          <p>Please login by typing the email address and the password visible on the fields.</p>
+        </Jumbotron>
+        <UserLogin submit={this.handleSubmit} />
+      </Container>
+    );
   }
   renderNewestData = () => {
     return (<NewData accessToken={this.state.user.accessToken || this.state.accessTokenInLocalStorage} />);
@@ -94,30 +105,47 @@ export default class App extends Component {
     console.log('userloggedin', this.state.userLoggedIn);
 
     return (
-      <Container>
-        <div>
-          {this.state.userLoggedIn ? <div>HELLO USER <Button onClick={this.logout}>Log out</Button></div> : this.renderLoginPage()}
-        </div>
-        {this.state.userLoggedIn &&
+      <div>
+        {this.state.userLoggedIn ? <NavigationBar logout={this.logout} /> : this.renderLoginPage()}
+        <Container>
           <div>
-            <div>
-              <h4>Newest data:</h4>
-              {this.renderNewestData()}
-            </div>
-            <div>
-              <h4>Old data:</h4>
-              {this.renderOldData()}
-            </div>
-            <div>
-              <h4>Sensors:</h4>
-              <Button onClick={() => this.showSensorData(1)}>Sensor1</Button>
-              <Button onClick={() => this.showSensorData(2)}>Sensor2</Button>
-              <Button onClick={() => this.showSensorData(3)}>Sensor3</Button>
-              <Button onClick={() => this.showSensorData(4)}>Sensor4</Button>
-            </div>
+            <br />
           </div>
-        }
-      </Container>
+          {this.state.userLoggedIn &&
+            <div>
+              <Row>
+                <Col md='8' style={{ textAlign: 'center' }}>
+                  <Col>
+                    <h2>Welcome user!</h2>
+                    <p>Here you can view data visualization of the data collected from four sensors.</p>
+                    <p>You find current sensor data fetched from the data provider, history of each sensor in a line chart,
+                      all sensor data in one chart and also easily readable in a table.
+                      You can also see the data from each hour in a bar chart if you click a button on a table row.</p>
+                  </Col>
+                  <Col>
+                    <br />
+                    <h4>Sensors:</h4>
+                    <p>View a line chart of the data of a sensor by clicking</p>
+                    <Button onClick={() => this.showSensorData(1)} variant="secondary">Sensor1</Button>{' '}
+                    <Button onClick={() => this.showSensorData(2)} variant="secondary">Sensor2</Button>{' '}
+                    <Button onClick={() => this.showSensorData(3)} variant="secondary">Sensor3</Button>{' '}
+                    <Button onClick={() => this.showSensorData(4)} variant="secondary">Sensor4</Button>{' '}
+                  </Col>
+                </Col>
+                <Col md='4'>
+                  {this.renderNewestData()}
+                </Col>
+              </Row>
+              <hr />
+              <div>
+                <h3>Data history</h3>
+                {this.renderOldData()}
+              </div>
+              <hr />
+            </div>
+          }
+        </Container>
+      </div>
     );
   }
 }
