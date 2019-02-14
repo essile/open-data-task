@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart, Geom, Axis, Tooltip, } from "bizcharts";
 import { GetDataFromDb } from './ServiceClient';
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Row, Col, Table } from "react-bootstrap";
 import history from './history';
 
 export default class Basic extends React.Component {
@@ -79,9 +79,32 @@ export default class Basic extends React.Component {
                         }}
                     />
                 </Chart>
-                <div>
+                <Container>
+                    <Row >
+                        <Col lg={3}></Col>
+                        <Col lg={6}>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <td>Date</td>
+                                        <td>sensor value</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.filteredData.map((dataItem, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>{dataItem.dateTime}</td>
+                                                <td>{dataItem.sensorValue}</td>
+                                            </tr>)
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Col>
+                        <Col lg={3}></Col>
+                    </Row>
                     <Button variant="secondary" onClick={() => history.goBack()}>Back</Button>
-                </div>
+                </Container>
             </div>
         );
     }
