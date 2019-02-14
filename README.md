@@ -1,68 +1,40 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Open data task
+A single page application that collects sensor data from an open API, saves the data to a database through another interface and visualizes the collected data.
 
-## Available Scripts
+### Tech stack used:
+- React.js (including axios, react-bootstrap, react-router, history, bizcharts...) 
+- Node.js (including express, cors, aws-sdk...)
+- DynamoDB locally (Docker image) to store the data collected
 
-In the project directory, you can run:
+### How does it work:
 
-### `npm start`
+The data gets collected from an open API, but you need a token in order to get it.
+On the MVP version of the application you can login with an email that already has a token. (However, not possible on the demo version to make it easier to use.)
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The data gets fetched only when you are logged in.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+After login you can see 
+- the newest/current data from four sensors, that gets automatically updated every hour
+- buttons to see individual data from each of the four sensors
+- a line chart with all the data collected
+- a table with all the data collected, and you can also see the row data in a bar chart by clicking the button on the row
 
-### `npm test`
+The token gets saved to your local storage, so that you do not need to login again and you still get the newest data.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Demo version
 
-### `npm run build`
+You can view the application here: https://thirsty-neumann-ced1d1.netlify.com/
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The published version has working login details hardcoded to the login form. The database was removed (for financial reasons). Instead of sending the new collected data to a DynamoDB table (which is the source of the data history) the chart shows the data collected every hour between February 11th and 13th.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Future development ideas
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Signup so that you can get your individual token
+- At the moment the application shows only the data the user has collected. The backend could also collect and store all the data so that in case the user did not collect the data it would get stored anyway.
+- You should be able to filter the data in different ways
+- Deployment in docker containers (separate backend and frontend)
 
-### `npm run eject`
+#### What is the data?
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+The api does not tell but I believe it is some kind of weather data :) 
+(f.ex. tide, humidity, temperature...)
