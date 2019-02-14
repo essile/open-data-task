@@ -42,7 +42,7 @@ export default class OldData extends Component {
     }
 
     render() {
-        const toggleTableButton = <Button onClick={this.showData} variant="secondary">{this.state.showTable ? 'Hide table' : 'Show the data in table'}</Button>
+        const toggleTableButton = <Button onClick={this.showData} variant="secondary">{this.state.showTable ? 'Hide table' : 'Show data history in a table'}</Button>
 
         return (
             <div>

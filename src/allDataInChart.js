@@ -58,17 +58,17 @@ export default class Curved extends React.Component {
 
         dv.transform({
             type: "fold",
-            fields: ["sensor1", "sensor2", "sensor3", "sensor4"],
+            fields: ["sensor2", "sensor1", "sensor4", "sensor3"],
             key: "sensorValue",
             value: "value"
         });
 
-        const cols = { date: { range: [0, 1] } };
+        const cols = { date: { range: [0, 1] }, value: { tickInterval: 20 } };
 
         return (
             <div>
                 <p>By clicking the sensor tags on the bottom of the chart you can hide and show the lines.</p>
-                <Chart height={500} data={dv} scale={cols} padding="auto" forceFit>
+                <Chart height={600} data={dv} scale={cols} padding="auto" forceFit>
                     <Legend />
                     <Axis name="date"
                         visible={false} />
