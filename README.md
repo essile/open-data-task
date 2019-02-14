@@ -32,6 +32,8 @@ The published version has working login details hardcoded to the login form. The
 - Signup so that you can get your individual token
 - At the moment the application shows only the data the user has collected. The backend could also collect and store all the data so that in case the user did not collect the data it would get stored anyway.
 - You should be able to filter the data in different ways
+- Ways to show the data history nicely even if it grows a lot (in addition to the filter f.ex. horizontal scrolling, bundling the data somehow)
+- Ways to compare the data (f.ex. what was the sensor1 value at noon today compared to the value last week)
 - Deployment in docker containers (separate backend and frontend)
 
 #### What is the data?
