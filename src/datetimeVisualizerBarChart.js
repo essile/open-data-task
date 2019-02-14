@@ -55,7 +55,7 @@ export default class Basiccolumn extends React.Component {
                             <Axis name="sensor" />
                             <Axis name="value" />
                             <Tooltip />
-                            <Geom type="interval" position="sensor*value" />
+                            <Geom type="interval" position="sensor*value" color="#2E2E2E"/>
                         </Chart>
                     </Card.Body>
                 </Card>

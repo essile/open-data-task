@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart, Geom, Axis, Tooltip, } from "bizcharts";
 import { GetDataFromDb } from './ServiceClient';
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import history from './history';
 
 export default class Basic extends React.Component {
@@ -57,20 +57,26 @@ export default class Basic extends React.Component {
 
         return (
             <div>
+                <Container><h3>Data collected from sensor {this.state.sensor}</h3></Container>
                 <br />
                 <Chart height={400} data={data} scale={cols} padding="auto" forceFit>
                     <Axis name="dateTime" visible={false} />
                     <Axis name="sensorValue" />
                     <Tooltip crosshairs={{ type: "y" }} />
-                    <Geom type="line" position="dateTime*sensorValue" size={2} />
+                    <Geom
+                        type="line"
+                        position="dateTime*sensorValue"
+                        color={["sensorValue", "#2E2E2E"]}
+                        size={2} />
                     <Geom
                         type="point"
                         position="dateTime*sensorValue"
                         size={4}
-                        shape={"circle"}
+                        shape={["circle", "#2E2E2E"]}
+                        color="#2E2E2E"
                         style={{
                             stroke: "#fff",
-                            lineWidth: 1
+                            lineWidth: 1,
                         }}
                     />
                 </Chart>
