@@ -8,7 +8,7 @@ AWS.config.update({
 var dynamodb = new AWS.DynamoDB();
 
 var params = {
-    TableName: "SensorData",
+    TableName: "AllSensorData",
     KeySchema: [
         { AttributeName: "date", KeyType: "HASH" }
     ],

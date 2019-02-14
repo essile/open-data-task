@@ -34,7 +34,7 @@ export default class Data extends Component {
     }
 
     sendDataToDb = () => {
-        SendNewSensorDataToDb(this.state.data, response => {});
+        // SendNewSensorDataToDb(this.state.data, response => {}); // DEPLOYMENT VERSION
     }
 
     render() {

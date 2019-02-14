@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { GetDataFromDb } from './ServiceClient';
+// import { GetDataFromDb } from './ServiceClient';
 import AllDataInChart from './allDataInChart';
 import OldDataTable from './OldDataTable';
 import Button from 'react-bootstrap/Button';
+import collectedData from './collectedData'; // DEPLOYMENT VERSION
 
 export default class OldData extends Component {
 
@@ -20,15 +21,17 @@ export default class OldData extends Component {
     }
 
     componentDidMount() {
-        GetDataFromDb(response => {
-            if (response.data !== undefined) {
-                let FetchedOldData = response.data;
-                this.sortDataByDate(FetchedOldData);
-                this.setState({ oldData: FetchedOldData });
-            } else {
-                // error handling here
-            }
-        });
+        // GetDataFromDb(response => {
+        //     if (response.data !== undefined) {
+        //         let FetchedOldData = response.data;
+        //         this.sortDataByDate(FetchedOldData);
+        //         this.setState({ oldData: FetchedOldData });
+        //     } else {
+        //         // error handling here
+        //     }
+        // });
+
+        this.setState({ oldData: collectedData, showTable: localStorage.getItem('showTable') }); // DEPLOYMENT VERSION
     }
 
     sortDataByDate = data => {
@@ -38,6 +41,7 @@ export default class OldData extends Component {
     }
 
     showData = () => {
+        localStorage.setItem('showTable', !this.state.showTable);
         this.setState({ showTable: !this.state.showTable });
     }
 

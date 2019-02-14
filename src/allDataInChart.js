@@ -1,7 +1,8 @@
 import React from "react";
 import { Chart, Geom, Axis, Tooltip, Legend, } from "bizcharts";
 import DataSet from "@antv/data-set";
-import { GetDataFromDb } from './ServiceClient';
+// import { GetDataFromDb } from './ServiceClient'; // DEPLOYMENT VERSION
+import collectedData from './collectedData';
 
 export default class Curved extends React.Component {
 
@@ -20,11 +21,14 @@ export default class Curved extends React.Component {
     componentDidMount() {
         let dataWithLocaleDateTime = [];
         if (this.props.data === undefined) {
-            GetDataFromDb(response => {
-                this.sortDataByDate(response.data);
-                dataWithLocaleDateTime = this.changeDateTimeToLocale(response.data);
-                this.setState({ dataFromSensors: dataWithLocaleDateTime });
-            });
+            // GetDataFromDb(response => {
+            //     this.sortDataByDate(response.data);
+            //     dataWithLocaleDateTime = this.changeDateTimeToLocale(response.data);
+            //     this.setState({ dataFromSensors: dataWithLocaleDateTime });
+            // });
+
+            this.setState({ oldData: collectedData }); // DEPLOYMENT VERSION
+
         } else {
             this.sortDataByDate(this.props.data);
             dataWithLocaleDateTime = this.changeDateTimeToLocale(this.props.data);

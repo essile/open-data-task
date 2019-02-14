@@ -72,6 +72,7 @@ export default class App extends Component {
 
   logout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('showTable');
     this.setState({ userLoggedIn: false });
   }
 

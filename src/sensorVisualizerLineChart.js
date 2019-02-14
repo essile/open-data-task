@@ -1,8 +1,9 @@
 import React from "react";
 import { Chart, Geom, Axis, Tooltip, } from "bizcharts";
-import { GetDataFromDb } from './ServiceClient';
+// import { GetDataFromDb } from './ServiceClient'; // DEPLOYMENT VERSION
 import { Button, Container } from "react-bootstrap";
 import history from './history';
+import collectedData from './collectedData';
 
 export default class Basic extends React.Component {
 
@@ -14,26 +15,40 @@ export default class Basic extends React.Component {
     }
 
     componentDidMount() {
-        GetDataFromDb(response => {
+        // GetDataFromDb(response => {
 
-            let FetchedOldData = response.data;
-            let filteredData = [];
+        //     let FetchedOldData = response.data;
+        //     let filteredData = [];
 
-            this.sortDataByDate(FetchedOldData);
+        //     this.sortDataByDate(FetchedOldData);
 
-            FetchedOldData.map(value => {
-                let dateTime = value['date'];
-                dateTime = new Date(dateTime).toLocaleString();
+        //     FetchedOldData.map(value => {
+        //         let dateTime = value['date'];
+        //         dateTime = new Date(dateTime).toLocaleString();
 
-                let sensorValue = value[`sensor${this.state.sensor}`];
-                filteredData.push({ dateTime, sensorValue });
-                return value;
-            });
+        //         let sensorValue = value[`sensor${this.state.sensor}`];
+        //         filteredData.push({ dateTime, sensorValue });
+        //         return value;
+        //     });
 
-            const sensorMax = Math.max.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
-            const sensorMin = Math.min.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
-            this.setState({ filteredData, sensorMin, sensorMax });
+        //     const sensorMax = Math.max.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
+        //     const sensorMin = Math.min.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
+        //     this.setState({ filteredData, sensorMin, sensorMax });
+        // });
+
+        // DEPLOYMENT VERSION:
+        const filteredData = [];
+        collectedData.map(value => {
+            let dateTime = value['date'];
+            dateTime = new Date(dateTime).toLocaleString();
+
+            let sensorValue = value[`sensor${this.state.sensor}`];
+            filteredData.push({ dateTime, sensorValue });
+            return value;
         });
+        const sensorMax = Math.max.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
+        const sensorMin = Math.min.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
+        this.setState({ filteredData, sensorMin, sensorMax });
     }
 
     sortDataByDate = data => {
