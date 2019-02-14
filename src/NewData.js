@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, ListGroup, ListGroupItem, Table, } from 'react-bootstrap';
+import { Card, Table, } from 'react-bootstrap';
 import { GetNewData, SendNewSensorDataToDb } from './ServiceClient';
 
 export default class Data extends Component {
@@ -21,6 +21,7 @@ export default class Data extends Component {
 
         this.interval = setInterval(() => {
             this.fetchNewestData();
+            this.setState(this.state);
         }, 1000 * 60 * 15);
     }
 
@@ -33,17 +34,12 @@ export default class Data extends Component {
     }
 
     sendDataToDb = () => {
-        SendNewSensorDataToDb(this.state.data, response => {
-            console.log('newest data sent to the db, response:', response);
-        });
+        SendNewSensorDataToDb(this.state.data, response => {});
     }
 
     render() {
-        console.log('new data to render', this.state.data);
-
         return (
             <Card bg="light">
-                {/* <Card.Body> */}
                 <Card.Header>
                     <h3>Current sensor data</h3>
                     Collected {new Date(this.state.data.date).toLocaleString()}

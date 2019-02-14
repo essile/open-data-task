@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart, Geom, Axis, Tooltip, } from "bizcharts";
 import { GetDataFromDb } from './ServiceClient';
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import history from './history';
 
 export default class Basic extends React.Component {
@@ -27,7 +27,8 @@ export default class Basic extends React.Component {
 
                 let sensorValue = value[`sensor${this.state.sensor}`];
                 filteredData.push({ dateTime, sensorValue });
-            })
+                return value;
+            });
 
             const sensorMax = Math.max.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
             const sensorMin = Math.min.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
@@ -42,8 +43,6 @@ export default class Basic extends React.Component {
     }
 
     render() {
-        console.log('visualizing the following data:', this.state);
-
         const data = this.state.filteredData;
         const cols = {
             sensorValue: {
@@ -57,20 +56,26 @@ export default class Basic extends React.Component {
 
         return (
             <div>
+                <Container><h3>Data collected from sensor {this.state.sensor}</h3></Container>
                 <br />
                 <Chart height={400} data={data} scale={cols} padding="auto" forceFit>
                     <Axis name="dateTime" visible={false} />
                     <Axis name="sensorValue" />
                     <Tooltip crosshairs={{ type: "y" }} />
-                    <Geom type="line" position="dateTime*sensorValue" size={2} />
+                    <Geom
+                        type="line"
+                        position="dateTime*sensorValue"
+                        color={["sensorValue", "#2E2E2E"]}
+                        size={2} />
                     <Geom
                         type="point"
                         position="dateTime*sensorValue"
                         size={4}
-                        shape={"circle"}
+                        shape={["circle", "#2E2E2E"]}
+                        color="#2E2E2E"
                         style={{
                             stroke: "#fff",
-                            lineWidth: 1
+                            lineWidth: 1,
                         }}
                     />
                 </Chart>

@@ -31,7 +31,7 @@ app.get('/api/data-from-db', (req, res) => {
     let params = {
         TableName: "AllSensorData"
     };
-    console.log("Scanning SensorData table.");
+    console.log("Scanning AllSensorData table.");
     docClient.scan(params, onScan);
 
     function onScan(err, data) {
@@ -80,7 +80,7 @@ app.get('/api/data-from-db', (req, res) => {
     let params = {
         TableName: "AllSensorData"
     };
-    console.log("Scanning ALL-SensorData table.");
+    console.log("Scanning AllSensorData table.");
     docClient.scan(params, onScan);
 
     function onScan(err, data) {

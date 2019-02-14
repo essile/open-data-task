@@ -22,7 +22,6 @@ export default class Curved extends React.Component {
         if (this.props.data === undefined) {
             GetDataFromDb(response => {
                 this.sortDataByDate(response.data);
-                console.log(response.data);
                 dataWithLocaleDateTime = this.changeDateTimeToLocale(response.data);
                 this.setState({ dataFromSensors: dataWithLocaleDateTime });
             });
@@ -46,31 +45,30 @@ export default class Curved extends React.Component {
             let data = { ...value };
             data.date = new Date(value['date']).toLocaleString();
             dataWithLocaleDateTime.push(data);
+            return value;
         });
 
         return dataWithLocaleDateTime;
     }
 
     render() {
-        console.log('data to be rendered', this.state.dataFromSensors);
-
         const data = this.state.dataFromSensors;
         const ds = new DataSet();
         const dv = ds.createView().source(data);
 
         dv.transform({
             type: "fold",
-            fields: ["sensor1", "sensor2", "sensor3", "sensor4"],
+            fields: ["sensor2", "sensor1", "sensor4", "sensor3"],
             key: "sensorValue",
             value: "value"
         });
 
-        const cols = { date: { range: [0, 1] } };
+        const cols = { date: { range: [0, 1] }, value: { tickInterval: 20 } };
 
         return (
             <div>
                 <p>By clicking the sensor tags on the bottom of the chart you can hide and show the lines.</p>
-                <Chart height={400} data={dv} scale={cols} padding="auto" forceFit>
+                <Chart height={600} data={dv} scale={cols} padding="auto" forceFit>
                     <Legend />
                     <Axis name="date"
                         visible={false} />

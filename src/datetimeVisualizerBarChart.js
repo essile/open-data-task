@@ -1,5 +1,7 @@
 import React from "react";
-import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, View, Guide, Shape, Facet, Util } from "bizcharts";
+import { Chart, Geom, Axis, Tooltip } from "bizcharts";
+import { Container, Card, Button } from "react-bootstrap";
+import history from './history';
 
 export default class Basiccolumn extends React.Component {
 
@@ -19,7 +21,6 @@ export default class Basiccolumn extends React.Component {
     }
 
     render() {
-        console.log('data to be visualized:', this.state.data);
         const data = [
             {
                 sensor: 'sensor1',
@@ -40,18 +41,27 @@ export default class Basiccolumn extends React.Component {
         ];
         const cols = {
             value: {
-                tickInterval: 20
+                tickInterval: 10
             }
         };
         return (
-            <div>
-                <Chart height={400} data={data} scale={cols} >
-                    <Axis name="sensor" />
-                    <Axis name="value" />
-                    {/* <Tooltip crosshairs={{ type: "y" }}/> */}
-                    <Geom type="interval" position="sensor*value" />
-                </Chart>
-            </div>
+            <Container>
+                <br />
+                <Card style={{ width: '34rem' }}>
+                    <Card.Body>
+                        <h3>Data collected: {this.state.data.date}</h3>
+                        <Chart height={800} data={data} scale={cols} padding="auto" >
+                            <Axis name="sensor" />
+                            <Axis name="value" />
+                            <Tooltip />
+                            <Geom type="interval" position="sensor*value" color="#2E2E2E"/>
+                        </Chart>
+                    </Card.Body>
+                </Card>
+                <div>
+                    <Button variant="secondary" onClick={() => history.goBack()}>Back</Button>
+                </div>
+            </Container>
         );
     }
 }

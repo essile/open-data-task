@@ -26,7 +26,6 @@ export default class OldData extends Component {
                 this.sortDataByDate(FetchedOldData);
                 this.setState({ oldData: FetchedOldData });
             } else {
-                console.log('Data cannot be loaded.');
                 // error handling here
             }
         });
@@ -43,8 +42,7 @@ export default class OldData extends Component {
     }
 
     render() {
-        console.log('old data to render', this.state.oldData);
-        const toggleTableButton = <Button onClick={this.showData} variant="secondary">{this.state.showTable ? 'Hide table' : 'Show the data in table'}</Button>
+        const toggleTableButton = <Button onClick={this.showData} variant="secondary">{this.state.showTable ? 'Hide table' : 'Show data history in a table'}</Button>
 
         return (
             <div>
