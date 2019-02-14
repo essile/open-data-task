@@ -21,7 +21,6 @@ export default class Basiccolumn extends React.Component {
     }
 
     render() {
-        console.log('data to be visualized:', this.state.data);
         const data = [
             {
                 sensor: 'sensor1',

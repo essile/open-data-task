@@ -4,7 +4,6 @@ import { Navbar, Nav, Button } from 'react-bootstrap';
 export default class NavigationBar extends Component {
 
     logout = () => {
-        console.log('click!')
         this.props.logout();
     }
 

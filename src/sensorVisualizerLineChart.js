@@ -27,7 +27,8 @@ export default class Basic extends React.Component {
 
                 let sensorValue = value[`sensor${this.state.sensor}`];
                 filteredData.push({ dateTime, sensorValue });
-            })
+                return value;
+            });
 
             const sensorMax = Math.max.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
             const sensorMin = Math.min.apply(Math, filteredData.map(function (o) { return o.sensorValue; }));
@@ -42,8 +43,6 @@ export default class Basic extends React.Component {
     }
 
     render() {
-        console.log('visualizing the following data:', this.state);
-
         const data = this.state.filteredData;
         const cols = {
             sensorValue: {

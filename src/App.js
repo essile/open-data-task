@@ -95,15 +95,10 @@ export default class App extends Component {
   }
 
   showSensorData = (sensorNumber) => {
-    console.log('clicked sensor number', sensorNumber);
     history.push(`/sensor/${sensorNumber}`);
   }
 
   render() {
-    console.log('user', this.state.user);
-    console.log('accessTokenInLocalStorage', this.state.accessTokenInLocalStorage);
-    console.log('userloggedin', this.state.userLoggedIn);
-
     return (
       <div>
         {this.state.userLoggedIn ? <NavigationBar logout={this.logout} /> : this.renderLoginPage()}
