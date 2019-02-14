@@ -21,9 +21,14 @@ export default class OldData extends Component {
 
     componentDidMount() {
         GetDataFromDb(response => {
-            let FetchedOldData = response.data;
-            this.sortDataByDate(FetchedOldData);
-            this.setState({ oldData: FetchedOldData });
+            if (response.data !== undefined) {
+                let FetchedOldData = response.data;
+                this.sortDataByDate(FetchedOldData);
+                this.setState({ oldData: FetchedOldData });
+            } else {
+                console.log('Data cannot be loaded.');
+                // error handling here
+            }
         });
     }
 

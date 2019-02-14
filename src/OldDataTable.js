@@ -18,6 +18,7 @@ class OldDataTable extends Component {
 
     componentDidMount() {
         let dataWithLocaleDateTime = [];
+        console.log('kaatuuks olddatatableen', this.props.data)
         // if (this.props.data === undefined) {
         //     GetDataFromDb(response => {
         //         this.sortDataByDate(response.data);
@@ -73,16 +74,17 @@ class OldDataTable extends Component {
                     </thead>
                     <tbody>
                         {this.state.dataFromSensors.map((dataItem, index) => {
+                            console.log('dataitem', dataItem)
                             return (
                                 <tr key={index}>
-                                    <td>{dataItem.date}</td>
+                                    {dataItem.date === 'Invalid Date' ? <td>no data available, try again later</td> : <td>{dataItem.date}</td>}
                                     <td>{dataItem.sensor1}</td>
                                     <td>{dataItem.sensor2}</td>
                                     <td>{dataItem.sensor3}</td>
                                     <td>{dataItem.sensor4}</td>
-                                    <td><Button key={index} variant='outline-secondary' onClick={() => this.showDetails(dataItem)}>show bar chart</Button></td>
-                                </tr>
-                            )
+                                    {dataItem.date === 'Invalid Date' ? <td></td>
+                                        : <td><Button key={index} variant='outline-secondary' onClick={() => this.showDetails(dataItem)}>show bar chart</Button></td>}
+                                </tr>)
                         })}
                     </tbody>
                 </Table>

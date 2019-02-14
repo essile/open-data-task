@@ -47,9 +47,11 @@ export function GetDataFromDb(callback) {
     Axios.get(BACKEND + '/api/data-from-db')
         .then(response => {
             callback(response);
+
         })
         .catch(error => {
-            callback(error.response);
+            const response = {}
+            callback(response);
         });
 }
 
