@@ -21,6 +21,8 @@ export default class OldData extends Component {
     }
 
     componentDidMount() {
+
+        // DEPLOYMENT VERSION
         // GetDataFromDb(response => {
         //     if (response.data !== undefined) {
         //         let FetchedOldData = response.data;

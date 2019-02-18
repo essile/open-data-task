@@ -17,7 +17,6 @@ class OldDataTable extends Component {
     }
 
     componentDidMount() {
-        console.log('tableeee')
         let dataWithLocaleDateTime = [];
         dataWithLocaleDateTime = this.changeDateTimeToLocale(this.props.data);
         this.setState({ dataFromSensors: dataWithLocaleDateTime });
